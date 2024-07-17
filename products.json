@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "name": "Beach Vacation Package",
+      "keywords": ["beach", "vacation", "travel"]
+    },
+    {
+      "id": 2,
+      "name": "Ancient Temple Tour",
+      "keywords": ["temple", "history", "architecture"]
+    },
+    {
+      "id": 3,
+      "name": "Exploring Countries in Europe",
+      "keywords": ["country", "europe", "travel"]
+    }
+  ]
