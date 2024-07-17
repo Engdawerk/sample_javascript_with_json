@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Variation Keyword Search</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <input type="text" id="keywords" placeholder="Enter keywords (beach, temples, countries)">
+      <button id="searchBtn">Search</button>
+    </nav>
+  </header>
+
+  <main>
+    <div id="results"></div>
+  </main>
+
+  <script>
+    // Get the search button and results container
+    const searchBtn = document.getElementById('searchBtn');
+    const resultsDiv = document.getElementById('results');
+
+    // Function to fetch products from the JSON file
+    function fetchProducts() {
+      return fetch('products.json')
+        .then(response => response.json())
+        .then(products => products)
+        .catch(error => {
+          console.error('Error loading products:', error);
+          resultsDiv.textContent = 'Error loading products.';
+          return [];
+        });
+    }
+
+    // Function to filter products based on keywords
+    function filterProducts(products, keywordsArray) {
+      return products.filter(product => {
+        const productKeywords = product.keywords.map(word => word.toLowerCase());
+        return keywordsArray.every(keyword => {
+          if (keyword === 'beach' || keyword === 'beaches') {
+            return productKeywords.some(word => word.includes('beach'));
+          } else if (keyword === 'temple' || keyword === 'temples') {
+            return productKeywords.some(word => word.includes('temple'));
+          } else if (keyword === 'country' || keyword === 'countries') {
+            return productKeywords.some(word => word.includes('country'));
+          } else {
+            return productKeywords.includes(keyword);
+          }
+        });
+      });
+    }
+
+    // Function to display the search results
+    function displayResults(matchingProducts) {
+      resultsDiv.innerHTML = '';
+      if (matchingProducts.length === 0) {
+        resultsDiv.textContent = 'No matching products found.';
+      } else {
+        matchingProducts.forEach(product => {
+          const productElement = document.createElement('div');
+          productElement.textContent = `ID: ${product.id} - Name: ${product.name}`;
+          resultsDiv.appendChild(productElement);
+        });
+      }
+    }
+
+    // Add click event listener to the search button
+    searchBtn.addEventListener('click', async () => {
+      // Get the keywords from the input field
+      const keywordsInput = document.getElementById('keywords');
+      const keywordsArray = keywordsInput.value.split(',').map(word => word.trim().toLowerCase());
+
+      // Fetch the products and filter them based on the keywords
+      const products = await fetchProducts();
+      const matchingProducts = filterProducts(products, keywordsArray);
+
+      // Display the search results
+      displayResults(matchingProducts);
+    });
+  </script>
+</body>
+</html>
